@@ -34,16 +34,33 @@ class SlackMsgSender:
         else:
             return None
 
-    def send_slack_msg(self):
-        channel_id = self.get_slack_channel_id()
-
+    def create_slack_channel(self):
         try:
             slack_token = config["SLACK"]["oauth_token"]
             client = WebClient(token=slack_token)
-            response = client.chat_postMessage(
-                channel=channel_id,
-                text=self.text
+            response = client.conversations_create(
+                name=self.channel,
+                is_private=False
             )
-            logger.info("message sending status code: {status_code}".format(status_code=response.status_code))
+            channel_id = response["channel"]["id"]
+            logger.info("channel created with id: {channel_id}".format(channel_id=channel_id))
+            return channel_id
         except SlackApiError as e:
             logger.error(e.response["error"])
+
+    def send_slack_msg(self):
+        channel_id = self.get_slack_channel_id()
+        if channel_id is None:
+            channel_id = self.create_slack_channel()
+
+        if channel_id is not None:
+            try:
+                slack_token = config["SLACK"]["oauth_token"]
+                client = WebClient(token=slack_token)
+                response = client.chat_postMessage(
+                    channel=channel_id,
+                    text=self.text
+                )
+                logger.info("message sending status code: {status_code}".format(status_code=response.status_code))
+            except SlackApiError as e:
+                logger.error(e.response["error"])
