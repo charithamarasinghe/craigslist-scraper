@@ -1,14 +1,8 @@
-# ! /usr/bin/python
-
 import smtplib
-import configparser
-import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-base_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-config = configparser.ConfigParser()
-config.read(os.path.join(base_path, "config.ini"))
+from main import config
 
 
 def send_mail(recipient):

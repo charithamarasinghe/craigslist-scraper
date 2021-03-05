@@ -1,8 +1,3 @@
-#!/home/projects/webScrapingDamian/scraperEnv/bin/python3
-
-import time
-import csv
-import json
 import logging
 import configparser
 import os
