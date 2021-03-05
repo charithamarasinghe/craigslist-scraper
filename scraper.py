@@ -16,13 +16,6 @@ config.read(base_path + "/config.ini")
 web_driver_file = base_path + config["MAIN"]["web_driver_file"]
 
 
-def generate_url(location, distance, postal, auto_make_model, min_auto_year, max_auto_year, max_auto_miles,
-                 auto_title_status):
-    return f"https://{location}.craigslist.org/search/cta?purveyor-input=all&search_distance={distance}&" \
-           f"postal={postal}&auto_make_model={auto_make_model}&min_auto_year={min_auto_year}&max_auto_year" \
-           f"={max_auto_year}&max_auto_miles={max_auto_miles}&auto_title_status={auto_title_status}"
-
-
 def get_sel_page(url: str) -> BeautifulSoup:
     options = webdriver.ChromeOptions()
     options.add_argument('--ignore-certificate-errors')
@@ -98,20 +91,3 @@ class CraiglistScraper(object):
                 print(str(error))
 
         return all_post_data
-
-
-location_val = "losangeles"
-distance_val = "50"
-postal_val = 90069
-auto_make_model_val = "BMW"
-min_auto_year_val = "2013"
-max_auto_year_val = "2018"
-max_auto_miles_val = "80000"
-auto_title_status_val = "1"
-
-scraper = CraiglistScraper(location=location_val, distance=distance_val, postal=postal_val,
-                           auto_make_model=auto_make_model_val, min_auto_year=min_auto_year_val,
-                           max_auto_year=max_auto_year_val, max_auto_miles=max_auto_miles_val,
-                           auto_title_status=auto_title_status_val)
-data = scraper.extract_post_data()
-
