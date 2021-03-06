@@ -18,7 +18,7 @@ def get_slack_conversations():
 
 class SlackMsgSender:
     def __init__(self, channel, text):
-        self.channel = channel
+        self.channel = channel.lower()
         self.text = text
 
     def get_slack_channel_id(self):
