@@ -86,6 +86,15 @@ class CraiglistScraper(object):
                 post_data["date_time"] = basic_info.find("time", {"class": "result-date"})['datetime']
                 post_data["post_url"] = basic_info.find("a", {"class": "result-title hdrlnk"})['href']
                 post_data["post_title"] = basic_info.find("a", {"class": "result-title hdrlnk"}).text
+                post_data["location"] = self.location
+                post_data["distance"] = self.distance
+                post_data["postal"] = self.postal
+                post_data["auto_make_model"] = self.auto_make_model
+                post_data["min_auto_year"] = self.min_auto_year
+                post_data["max_auto_year"] = self.max_auto_year
+                post_data["max_auto_miles"] = self.max_auto_miles
+                post_data["auto_title_status"] = self.auto_title_status
+
                 all_post_data.append(post_data)
             except Exception as error:
                 print(str(error))

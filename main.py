@@ -7,6 +7,7 @@ base_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(1, base_path)
 
 import scraper
+import slack_msg_sender
 
 config = configparser.ConfigParser()
 config.read(base_path + "/config.ini")
@@ -36,6 +37,10 @@ def main():
                                          max_auto_year=max_auto_year_val, max_auto_miles=max_auto_miles_val,
                                          auto_title_status=auto_title_status_val)
     data = c_scraper.extract_post_data()
+
+    for post in data:
+        sms = slack_msg_sender.SlackMsgSender(channel=post["auto_make_model"], text=post["post_title"])
+        sms.send_slack_msg()
 
     return data
 
