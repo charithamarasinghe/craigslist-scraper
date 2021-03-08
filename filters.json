@@ -1,0 +1,12 @@
+[
+  {
+    "location_val": "losangeles",
+    "distance_val": "50",
+    "postal_val": 90069,
+    "auto_make_model_val": "BMW",
+    "min_auto_year_val": "2013",
+    "max_auto_year_val": "2018",
+    "max_auto_miles_val": "80000",
+    "auto_title_status_val": "1"
+  }
+]

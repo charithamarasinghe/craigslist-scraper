@@ -17,20 +17,21 @@ def get_slack_conversations():
 
 
 class SlackMsgSender:
-    def __init__(self, channel, text):
+    def __init__(self, channel):
         self.channel = channel.lower()
-        self.text = text
 
     def get_slack_channel_id(self):
         conversations = get_slack_conversations()
+        if conversations is not None:
+            if len(conversations) > 0:
+                channel_id = None
+                for conversation in conversations:
+                    if conversation["name"] == self.channel:
+                        channel_id = conversation["id"]
 
-        if len(conversations) > 0:
-            channel_id = None
-            for conversation in conversations:
-                if conversation["name"] == self.channel:
-                    channel_id = conversation["id"]
-
-            return channel_id
+                return channel_id
+            else:
+                return None
         else:
             return None
 
@@ -48,7 +49,7 @@ class SlackMsgSender:
         except SlackApiError as e:
             logger.error(e.response["error"])
 
-    def send_slack_msg(self):
+    def send_slack_msg(self, msg_text):
         channel_id = self.get_slack_channel_id()
         if channel_id is None:
             channel_id = self.create_slack_channel()
@@ -59,7 +60,7 @@ class SlackMsgSender:
                 client = WebClient(token=slack_token)
                 response = client.chat_postMessage(
                     channel=channel_id,
-                    text=self.text
+                    text=msg_text
                 )
                 logger.info("message sending status code: {status_code}".format(status_code=response.status_code))
             except SlackApiError as e:
