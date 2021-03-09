@@ -60,17 +60,13 @@ def filter_post_based_on_date(all_post_data: List[dict]) -> List[dict]:
         post_date = datetime.datetime.strptime(post["date_time"], '%Y-%m-%d %H:%M')
         look_back_days = int(config["MAIN"]["look_back_days"])
 
-        day_buffer_start = datetime.datetime.now() - datetime.timedelta(days=(look_back_days + 1))
         day_buffer_end = datetime.datetime.now() - datetime.timedelta(days=(look_back_days - 1))
 
-        day_buffer_start_val = datetime.datetime(day_buffer_start.year,
-                                                 day_buffer_start.month,
-                                                 day_buffer_start.day, 23, 59, 59, 0)
         day_buffer_end_val = datetime.datetime(day_buffer_end.year,
                                                day_buffer_end.month,
                                                day_buffer_end.day, 0, 0, 0, 0)
 
-        if day_buffer_start_val < post_date < day_buffer_end_val:
+        if post_date < day_buffer_end_val:
             filtered_posts.append(post)
     return filtered_posts
 
